@@ -3,26 +3,32 @@
 
 // we've started you off with Express (https://expressjs.com/)
 // but feel free to use whatever libraries or frameworks you'd like through `package.json`.
-const express = require('express');
+const express = require("express");
 const app = express();
-const todos = [
-  'Đi chợ',
-  'Nấu cơm',
-  'Rửa bát',
-  'Học code tại CoderX'
+
+// our default array of dreams
+const dreams = [
+  "Find and count some sheep",
+  "Climb a really tall mountain",
+  "Wash the dishes"
 ];
 
+// make all the files in 'public' available
+// https://expressjs.com/en/starter/static-files.html
+app.use(express.static("public"));
+
 // https://expressjs.com/en/starter/basic-routing.html
-app.get('/', (request, response) => {
-  response.send('<h1>I love CodersX</h1>');
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/views/index.html");
 });
 
-//todo list
-app.get('/todos', (req, res) => {
-  let list = todos.map(element => `<li>${element}</li>`).join('');
-  res.send('<ul>'+list+'</ul>');
+// send the default array of dreams to the webpage
+app.get("/dreams", (request, response) => {
+  // express helps us take JS objects and send them as JSON
+  response.json(dreams);
 });
+
 // listen for requests :)
-app.listen(process.env.PORT, () => {
-  console.log("Server listening on port " + process.env.PORT);
+const listener = app.listen(process.env.PORT, () => {
+  console.log("Your app is listening on port " + listener.address().port);
 });
